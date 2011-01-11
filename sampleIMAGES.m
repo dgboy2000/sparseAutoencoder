@@ -49,7 +49,7 @@ end
 % Specifically, since the output of the network is bounded between [0,1]
 % (due to the sigmoid activation function), we have to make sure 
 % the range of pixel values is also bounded between [0,1]
-%patches = normalizeData(patches);
+patches = normalizeData(patches);
 
 end
 

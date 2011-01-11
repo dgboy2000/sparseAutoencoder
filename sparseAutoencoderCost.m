@@ -41,18 +41,25 @@ b2grad = zeros(size(b2));
 % Stated differently, if we were using batch gradient descent to optimize the parameters,
 % the gradient descent update to W1 would be W1 := W1 - alpha * W1grad, and similarly for W2, b1, b2. 
 % 
+datasize = size(data);
+numpatches = datasize(2);
+
+% Row-vector to aid in calculation of hidden activations and output values
+weightsbuffer = ones(1, numpatches);
+
+ % Calculate activations of hidden and output neurons
+hiddenvalues = sigmoid( W1 * data + transpose(b1) * weightsbuffer );
+outputs = sigmoid( W2 * hiddenvalues + transpose(b2) * weightsbuffer );
+
+% Least squares component of cost
+leastsquares = power(norm(outputs - data), 2) / (2 * numpatches);s
 
 
 
 
 
 
-
-
-
-
-
-
+cost = leastsquares;
 
 
 
