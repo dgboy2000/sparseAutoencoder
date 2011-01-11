@@ -5,7 +5,7 @@ function patches = sampleIMAGES()
 load IMAGES;    % load images from disk 
 
 patchsize = 8;  % we'll use 8x8 patches 
-numpatches = 10000;
+numpatches = 10;%10000;
 
 % Initialize patches with zeros.  Your code will fill in this matrix--one
 % column per patch, 10000 columns. 
@@ -25,9 +25,20 @@ patches = zeros(patchsize*patchsize, numpatches);
 %  Image 1
 
 
+%size(IMAGES)
 
+img_side = 512;
 
+% Matrix of numpatches starting x and y coordinates for the image patches
+start_coords = ceil( (img_side - patchsize + 1) * rand(numpatches, 2) );
+images_to_sample = ceil( 6 * rand(numpatches, 1) );
 
+for patch=1:numpatches,
+    coords = start_coords(patch, :);
+    x=coords(1); y=coords(2);
+    sample = IMAGES(x:(x+patchsize-1), y:(y+patchsize-1), images_to_sample(patch));
+    patches(:,patch) = sample(:);
+end
 
 
 
@@ -38,7 +49,7 @@ patches = zeros(patchsize*patchsize, numpatches);
 % Specifically, since the output of the network is bounded between [0,1]
 % (due to the sigmoid activation function), we have to make sure 
 % the range of pixel values is also bounded between [0,1]
-patches = normalizeData(patches);
+%patches = normalizeData(patches);
 
 end
 
