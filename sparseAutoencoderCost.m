@@ -26,6 +26,10 @@ b2 = theta(2*hiddenSize*visibleSize+hiddenSize+1:end);
 % b1grad = zeros(size(b1)); 
 % b2grad = zeros(size(b2));
 
+avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
+sparsityvec = beta * (-sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations)); % hiddensize * 1
+sparsityvec * weightsbuffer
+
 %% ---------- YOUR CODE HERE --------------------------------------
 %  Instructions: Compute the cost/optimization objective J_sparse(W,b) for the Sparse Autoencoder,
 %                and the corresponding gradients W1grad, W2grad, b1grad, b2grad.
@@ -62,6 +66,11 @@ leastsquares = power(norm(errors), 2) / (2 * numpatches); % Average least square
 delta3 = errors .* outputs .* (1 - outputs); % Matrix of error terms, visiblesize * numpatches
 W2grad = delta3 * transpose(hiddenvalues) / numpatches; % visiblesize * hiddensize, averaged over all patches
 b2grad = delta3 * transpose(weightsbuffer) / numpatches; % visiblesize * 1, averaged over all patches
+
+% % Sparsity stuff
+% avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
+% sparsityvec = beta * (-sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations)); % hiddensize * 1
+% sparsityvec * weightsbuffer % Add this to the delta2 parenthesis
 
 delta2 = (transpose(W2) * delta3) .* hiddenvalues .* (1 - hiddenvalues); % hiddensize * numpatches
 W1grad = delta2 * transpose(data) / numpatches; % hiddensize * visiblesize, averaged over all patches
