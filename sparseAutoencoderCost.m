@@ -18,13 +18,13 @@ W2 = reshape(theta(hiddenSize*visibleSize+1:2*hiddenSize*visibleSize), visibleSi
 b1 = theta(2*hiddenSize*visibleSize+1:2*hiddenSize*visibleSize+hiddenSize);
 b2 = theta(2*hiddenSize*visibleSize+hiddenSize+1:end);
 
-% Cost and gradient variables (your code needs to compute these values). 
-% Here, we initialize them to zeros. 
-cost = 0;
-W1grad = zeros(size(W1)); 
-W2grad = zeros(size(W2));
-b1grad = zeros(size(b1)); 
-b2grad = zeros(size(b2));
+% % Cost and gradient variables (your code needs to compute these values). 
+% % Here, we initialize them to zeros. 
+% cost = 0;
+% W1grad = zeros(size(W1)); 
+% W2grad = zeros(size(W2));
+% b1grad = zeros(size(b1)); 
+% b2grad = zeros(size(b2));
 
 %% ---------- YOUR CODE HERE --------------------------------------
 %  Instructions: Compute the cost/optimization objective J_sparse(W,b) for the Sparse Autoencoder,
@@ -48,10 +48,10 @@ numpatches = datasize(2);
 weightsbuffer = ones(1, numpatches);
 
 % Calculate activations of hidden and output neurons
-hiddeninputs = W1 * data + transpose(b1) * weightsbuffer; % hiddensize * numpatches
+hiddeninputs = W1 * data + b1 * weightsbuffer; % hiddensize * numpatches
 hiddenvalues = sigmoid( hiddeninputs ); % hiddensize * numpatches
 
-finalinputs = W2 * hiddenvalues + transpose(b2) * weightsbuffer; %visiblesize * numpatches
+finalinputs = W2 * hiddenvalues + b2 * weightsbuffer; %visiblesize * numpatches
 outputs = sigmoid( finalinputs ); %visiblesize * numpatches
 
 % Least squares component of cost

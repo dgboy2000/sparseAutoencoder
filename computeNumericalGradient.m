@@ -19,14 +19,15 @@ numgrad = zeros(size(theta));
 % Hint: You will probably want to compute the elements of numgrad one at a time. 
 EPSILON = 1e-4;
 numelts = prod(size(theta));
-for i=1:numelts,
-    thetaplus = theta;
-    thetaplus(i) = thetaplus(i) + EPSILON;
+for i=1:numelts,    
+    theta(i) = theta(i) + EPSILON;
+    Jplus = J(theta);
     
-    thetaminus = theta;
-    thetaminus(i) = thetaminus(i) - EPSILON;
+    theta(i) = theta(i) - 2*EPSILON;
+    Jminus = J(theta);
     
-    numgrad(i) = (J(thetaplus) - J(thetaminus)) / (2 * EPSILON);
+    theta(i) = theta(i) + EPSILON;
+    numgrad(i) = (Jplus - Jminus) / (2 * EPSILON);
 end
 
 
