@@ -63,23 +63,23 @@ delta3 = errors .* outputs .* (1 - outputs); % Matrix of error terms, visiblesiz
 W2grad = delta3 * transpose(hiddenvalues) / numpatches; % visiblesize * hiddensize, averaged over all patches
 b2grad = delta3 * transpose(weightsbuffer) / numpatches; % visiblesize * 1, averaged over all patches
 
-% % Sparsity stuff
-% avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
-% sparsityvec = -sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations); % hiddensize * 1
-% sparsityvec * weightsbuffer % Add this to the delta2 parenthesis
-% kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
+% Sparsity stuff
+avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
+sparsityvec = -sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations); % hiddensize * 1
+% sparsityvec * weightsbuffer; % Add this to the delta2 parenthesis
+kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
 
-delta2 = (transpose(W2) * delta3) .* hiddenvalues .* (1 - hiddenvalues); % hiddensize * numpatches
+delta2 = (transpose(W2) * delta3 + beta * sparsityvec * weightsbuffer) .* hiddenvalues .* (1 - hiddenvalues); % hiddensize * numpatches
 W1grad = delta2 * transpose(data) / numpatches; % hiddensize * visiblesize, averaged over all patches
 b1grad = delta2 * transpose(weightsbuffer) / numpatches; % hiddensize * 1, averaged over all patches
 
-cost = leastsquares;
+cost = leastsquares + beta * kldiv;
 
 
-% % Weight-decay
-% cost = cost + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) );
-% W1grad = W1grad + lambda * W1;
-% W2grad = W2grad + lambda * W2;
+% Weight-decay
+cost = cost + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) );
+W1grad = W1grad + lambda * W1;
+W2grad = W2grad + lambda * W2;
 
 
 
