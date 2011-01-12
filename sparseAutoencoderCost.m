@@ -47,22 +47,25 @@ numpatches = datasize(2);
 % Row-vector to aid in calculation of hidden activations and output values
 weightsbuffer = ones(1, numpatches);
 
- % Calculate activations of hidden and output neurons
-hiddenvalues = sigmoid( W1 * data + transpose(b1) * weightsbuffer ); % hiddensize * numpatches
-outputs = sigmoid( W2 * hiddenvalues + transpose(b2) * weightsbuffer ); %visiblesize * numpatches
+% Calculate activations of hidden and output neurons
+hiddeninputs = W1 * data + transpose(b1) * weightsbuffer; % hiddensize * numpatches
+hiddenvalues = sigmoid( hiddeninputs ); % hiddensize * numpatches
+
+finalinputs = W2 * hiddenvalues + transpose(b2) * weightsbuffer; %visiblesize * numpatches
+outputs = sigmoid( finalinputs ); %visiblesize * numpatches
 
 % Least squares component of cost
-errors = data - outputs ;
-leastsquares = power(norm(errors), 2) / (2 * numpatches);
+errors = data - outputs; %visiblesize * numpatches
+leastsquares = power(norm(errors), 2) / (2 * numpatches); % Average least squares error over numpatches samples
 
 % Back-propagation calculation of gradients
-delta2mat = -errors .* outputs .* (1 - outputs); % Matrix of point-wise errors, visiblesize * numpatches
-delta2 = delta2mat * ones(1, numpatches) / numpatches; % Averaged into gradient over all samples, visiblesize * 1
+delta3 = -errors .* outputs .* (1 - outputs); % Matrix of point-wise errors, visiblesize * numpatches
+W2grad = delta3 * transpose(hiddenvalues) / numpatches; % visiblesize * hiddensize, averaged over all patches
+b2grad = delta3 * transpose(weightsbuffer) / numpatches; % visiblesize * 1, averaged over all patches
 
-delta
-
-W2grad = delta2 * (hiddenvalues
-
+delta2 = (transpose(W2) * delta3) .* hiddenvalues .* (1 - hiddenvalues); % hiddensize * numpatches
+W1grad = delta2 * transpose(data) / numpatches; % hiddensize * visiblesize, averaged over all patches
+b1grad = delta2 * transpose(weightsbuffer) / numpatches; % hiddensize * 1, averaged over all patches
 
 cost = leastsquares;
 
