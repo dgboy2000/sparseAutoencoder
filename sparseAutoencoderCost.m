@@ -48,15 +48,20 @@ numpatches = datasize(2);
 weightsbuffer = ones(1, numpatches);
 
  % Calculate activations of hidden and output neurons
-hiddenvalues = sigmoid( W1 * data + transpose(b1) * weightsbuffer );
-outputs = sigmoid( W2 * hiddenvalues + transpose(b2) * weightsbuffer );
+hiddenvalues = sigmoid( W1 * data + transpose(b1) * weightsbuffer ); % hiddensize * numpatches
+outputs = sigmoid( W2 * hiddenvalues + transpose(b2) * weightsbuffer ); %visiblesize * numpatches
 
 % Least squares component of cost
-leastsquares = power(norm(outputs - data), 2) / (2 * numpatches);s
+errors = data - outputs ;
+leastsquares = power(norm(errors), 2) / (2 * numpatches);
 
+% Back-propagation calculation of gradients
+delta2mat = -errors .* outputs .* (1 - outputs); % Matrix of point-wise errors, visiblesize * numpatches
+delta2 = delta2mat * ones(1, numpatches) / numpatches; % Averaged into gradient over all samples, visiblesize * 1
 
+delta
 
-
+W2grad = delta2 * (hiddenvalues
 
 
 cost = leastsquares;
@@ -84,5 +89,12 @@ end
 function sigm = sigmoid(x)
   
     sigm = 1 ./ (1 + exp(-x));
+end
+
+% Sigmoid function derivative using identity from lecture notes
+function sigmD = sigmoidDerivative(x)
+  
+    sigm = sigmoid(x);
+    sigmD = sigm .* (1 - sigm);
 end
 
