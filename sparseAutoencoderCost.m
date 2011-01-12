@@ -55,11 +55,11 @@ finalinputs = W2 * hiddenvalues + b2 * weightsbuffer; %visiblesize * numpatches
 outputs = sigmoid( finalinputs ); %visiblesize * numpatches
 
 % Least squares component of cost
-errors = data - outputs; %visiblesize * numpatches
+errors = outputs - data; %visiblesize * numpatches
 leastsquares = power(norm(errors), 2) / (2 * numpatches); % Average least squares error over numpatches samples
 
 % Back-propagation calculation of gradients
-delta3 = -errors .* outputs .* (1 - outputs); % Matrix of point-wise errors, visiblesize * numpatches
+delta3 = errors .* outputs .* (1 - outputs); % Matrix of error terms, visiblesize * numpatches
 W2grad = delta3 * transpose(hiddenvalues) / numpatches; % visiblesize * hiddensize, averaged over all patches
 b2grad = delta3 * transpose(weightsbuffer) / numpatches; % visiblesize * 1, averaged over all patches
 
@@ -70,6 +70,10 @@ b1grad = delta2 * transpose(weightsbuffer) / numpatches; % hiddensize * 1, avera
 cost = leastsquares;
 
 
+% % Weight-decay
+% cost = cost + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) );
+% W1grad = W1grad + lambda * W1;
+% W2grad = W2grad + lambda * W2;
 
 
 
@@ -94,10 +98,10 @@ function sigm = sigmoid(x)
     sigm = 1 ./ (1 + exp(-x));
 end
 
-% Sigmoid function derivative using identity from lecture notes
-function sigmD = sigmoidDerivative(x)
-  
-    sigm = sigmoid(x);
-    sigmD = sigm .* (1 - sigm);
-end
+% % Sigmoid function derivative using identity from lecture notes
+% function sigmD = sigmoidDerivative(x)
+%   
+%     sigm = sigmoid(x);
+%     sigmD = sigm .* (1 - sigm);
+% end
 

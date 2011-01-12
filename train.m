@@ -15,7 +15,7 @@
 %  change the parameters below.
 
 visibleSize = 8*8;   % number of input units 
-hiddenSize = 5;%25;     % number of hidden units 
+hiddenSize = 2;%25;     % number of hidden units 
 sparsityParam = 0.01;   % desired average activation of the hidden units.
                      % (This was denoted by the Greek alphabet rho, which looks like a lower-case "p",
 		     %  in the lecture notes). 
