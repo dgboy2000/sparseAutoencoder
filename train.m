@@ -72,10 +72,10 @@ theta = initializeParameters(hiddenSize, visibleSize);
 % and smaller training sets (e.g., using only 10 training examples and 1-2 hidden 
 % units) may speed things up.
 
-% First, lets make sure your numerical gradient computation is correct for a
-% simple function.  After you have implemented computeNumericalGradient.m,
-% run the following: 
-checkNumericalGradient();
+% % First, lets make sure your numerical gradient computation is correct for a
+% % simple function.  After you have implemented computeNumericalGradient.m,
+% % run the following: 
+% checkNumericalGradient();
 
 % Now we can use it to check your cost function and derivative calculations
 % for the sparse autoencoder.  
