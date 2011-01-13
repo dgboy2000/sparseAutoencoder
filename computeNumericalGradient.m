@@ -30,6 +30,7 @@ for i=1:numelts,
     numgrad(i) = (Jplus - Jminus) / (2 * EPSILON);
 end
 
+disp([theta numgrad])
 
 
 %% ---------------------------------------------------------------
