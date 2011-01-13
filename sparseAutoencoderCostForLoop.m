@@ -61,12 +61,12 @@ for i=1:numPatches,
 
   % Least squares component of cost
   error = a3 - patch;
-  % leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
+  leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
 
   % Back-propagation calculation of gradients
   d3 = error .* a3 .* (1 - a3);
-  % W2grad = W2grad + d3 * transpose(a2);
-  % b2grad = b2grad + d3;
+  W2grad = W2grad + d3 * transpose(a2);
+  b2grad = b2grad + d3;
 
   % % Sparsity stuff
   % avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
@@ -75,8 +75,8 @@ for i=1:numPatches,
   % kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
 
   d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
-  % W1grad = W1grad + d2 * transpose(patch);
-  % b1grad = b1grad + d2;
+  W1grad = W1grad + d2 * transpose(patch);
+  b1grad = b1grad + d2;
 end
 
 cost = leastSquares + lambda / 2 * ( norm2(W1) + norm2(W2) ); %% + beta * kldiv 

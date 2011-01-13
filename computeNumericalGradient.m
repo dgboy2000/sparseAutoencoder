@@ -19,7 +19,7 @@ numgrad = zeros(size(theta));
 % Hint: You will probably want to compute the elements of numgrad one at a time. 
 EPSILON = 1e-4;
 numElts = prod(size(theta));
-disp(theta)
+% disp(theta)
 for i=1:numElts,    
     theta(i) = theta(i) + EPSILON;
     Jplus = J(theta);
@@ -29,7 +29,7 @@ for i=1:numElts,
     
     theta(i) = theta(i) + EPSILON;
     numgrad(i) = (Jplus - Jminus) / (2 * EPSILON);
-    disp([theta(i) numgrad(i) Jplus Jminus])
+    % disp([theta(i) numgrad(i) Jplus Jminus])
 end
 
 % format longG
