@@ -62,8 +62,8 @@ theta = initializeParameters(hiddenSize, visibleSize);
 %  final submission of the visualized weights, please use parameters we 
 %  gave in Step 0 above.
 
-[cost, grad] = sparseAutoencoderCost(theta, visibleSize, hiddenSize, lambda, ...
-                                     sparsityParam, beta, patches);
+[cost, grad] = sparseAutoencoderCostForLoop(theta, visibleSize, hiddenSize, lambda, ...
+                                            sparsityParam, beta, patches);
 
 %%======================================================================
 %% STEP 3: Gradient Checking
