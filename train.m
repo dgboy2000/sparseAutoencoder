@@ -94,37 +94,37 @@ disp(diff); % Should be small. In our implementation, these values are
 
             % When you got this working, Congratulations!!! 
 
-%%======================================================================
-%% STEP 4: After verifying that your implementation of
-%  sparseAutoencoderCost is correct, You can start training your sparse
-%  autoencoder with minFunc (L-BFGS).
-
-%  Randomly initialize the parameters
-theta = initializeParameters(hiddenSize, visibleSize);
-
-%  Use minFunc to minimize the function
-addpath minFunc/
-options.Method = 'lbfgs'; % Here, we use L-BFGS to optimize our cost
-                          % function. Generally, for minFunc to work, you
-                          % need a function pointer with two outputs: the
-                          % function value and the gradient. In our problem,
-                          % sparseAutoencoderCost.m satisfies this.
-options.maxIter = 400;	  % Maximum number of iterations of L-BFGS to run 
-options.display = 'on';
-
-
-[opttheta, cost] = minFunc( @(p) sparseAutoencoderCost(p, ...
-                                   visibleSize, hiddenSize, ...
-                                   lambda, sparsityParam, ...
-                                   beta, patches), ...
-                              theta, options);
-
-%%======================================================================
-%% STEP 5: Visualization 
-
-W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
-display_network(W1', 12); 
-
-print -djpeg weights.jpg   % save the visualization to a file 
+% %%======================================================================
+% %% STEP 4: After verifying that your implementation of
+% %  sparseAutoencoderCost is correct, You can start training your sparse
+% %  autoencoder with minFunc (L-BFGS).
+% 
+% %  Randomly initialize the parameters
+% theta = initializeParameters(hiddenSize, visibleSize);
+% 
+% %  Use minFunc to minimize the function
+% addpath minFunc/
+% options.Method = 'lbfgs'; % Here, we use L-BFGS to optimize our cost
+%                           % function. Generally, for minFunc to work, you
+%                           % need a function pointer with two outputs: the
+%                           % function value and the gradient. In our problem,
+%                           % sparseAutoencoderCost.m satisfies this.
+% options.maxIter = 400;    % Maximum number of iterations of L-BFGS to run 
+% options.display = 'on';
+% 
+% 
+% [opttheta, cost] = minFunc( @(p) sparseAutoencoderCost(p, ...
+%                                    visibleSize, hiddenSize, ...
+%                                    lambda, sparsityParam, ...
+%                                    beta, patches), ...
+%                               theta, options);
+% 
+% %%======================================================================
+% %% STEP 5: Visualization 
+% 
+% W1 = reshape(opttheta(1:hiddenSize*visibleSize), hiddenSize, visibleSize);
+% display_network(W1', 12); 
+% 
+% print -djpeg weights.jpg   % save the visualization to a file 
 
 
