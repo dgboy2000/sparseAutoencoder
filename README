@@ -6,3 +6,7 @@ To continue debugging, I will take these steps:
 1. switch from MATLAB-optimized matrix operations to a for-loop of vector operations for clarity
 2. print out dimensions of elements along the way for sanity purposes
 3. print values of intermediate objects and sanity check
+
+fixes made:
+-for loop fixes least-squares gradient
+-misinterpreted norm(matrix) for sum of squares

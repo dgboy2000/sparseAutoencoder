@@ -44,10 +44,8 @@ b2grad = zeros(size(b2));
 datasize = size(data);
 numPatches = datasize(2);
 
-% Row-vector to aid in calculation of hidden activations and output values
-weightsbuffer = ones(1, numPatches);
-
-leastSquares = 0;
+storedHiddenValues = zeros(hiddenSize, numPatches);
+storedOutputValues = zeros(visibleSize, numPatches);
 
 for i=1:numPatches,
   patch = data(:,i);
@@ -59,6 +57,24 @@ for i=1:numPatches,
   z3 = W2 * a2 + b2;
   a3 = sigmoid( z3 );
 
+  storedHiddenValues(:, i) = a2;
+  storedOutputValues(:, i) = a3;
+end
+
+% Sparsity stuff
+avgActivations = transpose(mean(transpose(storedHiddenValues))); % row-wise average activations
+sparsityVec = -sparsityParam ./ avgActivations + (1 - sparsityParam) ./ (1 - avgActivations); % added to each d2 error term
+kldiv = sparsityParam * log(prod(sparsityParam ./ avgActivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgActivations) )); % Add this to cost
+
+leastSquares = 0;
+
+for i=1:numPatches,
+  patch = data(:,i);
+  
+  % Refresh activations of hidden and output neurons
+  a2 = storedHiddenValues(:, i);
+  a3 = storedOutputValues(:, i);
+
   % Least squares component of cost
   error = a3 - patch;
   leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
@@ -68,18 +84,12 @@ for i=1:numPatches,
   W2grad = W2grad + d3 * transpose(a2);
   b2grad = b2grad + d3;
 
-  % % Sparsity stuff
-  % avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
-  % sparsityvec = -sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations); % hiddensize * 1
-  % % sparsityvec * weightsbuffer; % Add this to the delta2 parenthesis
-  % kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
-
-  d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
+  d2 = (transpose(W2) * d3 + beta * sparsityVec) .* a2 .* (1 - a2);
   W1grad = W1grad + d2 * transpose(patch);
   b1grad = b1grad + d2;
 end
 
-cost = leastSquares + lambda / 2 * ( norm2(W1) + norm2(W2) ); %% + beta * kldiv 
+cost = leastSquares + lambda / 2 * ( norm2(W1) + norm2(W2) ) + beta * kldiv;
 W1grad = W1grad / numPatches + lambda * W1;
 W2grad = W2grad / numPatches + lambda * W2;
 b1grad = b1grad / numPatches;
