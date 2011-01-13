@@ -66,7 +66,7 @@ for i=1:numPatches,
   % Back-propagation calculation of gradients
   d3 = error .* a3 .* (1 - a3);
   W2grad = W2grad + d3 * transpose(a2) / numPatches;
-  b2grad = b2grad + d3 / numPatches;
+  % b2grad = b2grad + d3 / numPatches;
 
   % % Sparsity stuff
   % avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
@@ -76,13 +76,12 @@ for i=1:numPatches,
 
   d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
   W1grad = W1grad + d2 * transpose(patch) / numPatches;
-  b1grad = b1grad + d2 / numPatches;
+  % b1grad = b1grad + d2 / numPatches;
 end
 
 cost = lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
 W1grad = lambda * W1;
 W2grad = lambda * W2;
-
 
 
 
