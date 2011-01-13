@@ -79,6 +79,10 @@ for i=1:numPatches,
   b1grad = b1grad + d2 / numPatches;
 end
 
+size(W1)
+size(W2)
+size(W1grad)
+size(W2grad)
 cost = leastSquares + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
 W1grad = W1grad + lambda * W1;
 W2grad = W2grad + lambda * W2;
