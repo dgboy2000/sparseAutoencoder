@@ -5,7 +5,7 @@ function patches = sampleIMAGES()
 load IMAGES;    % load images from disk 
 
 patchsize = 8;  % we'll use 8x8 patches 
-numpatches = 10;%10000;
+numpatches = 110000;
 
 % Initialize patches with zeros.  Your code will fill in this matrix--one
 % column per patch, 10000 columns. 
@@ -23,9 +23,6 @@ patches = zeros(patchsize*patchsize, numpatches);
 %  more details.) As a second example, IMAGES(21:30,21:30,1) is an image
 %  patch corresponding to the pixels in the block (21,21) to (30,30) of
 %  Image 1
-
-
-%size(IMAGES)
 
 img_side = 512;
 
