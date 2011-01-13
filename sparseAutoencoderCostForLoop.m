@@ -79,7 +79,7 @@ for i=1:numPatches,
   % b1grad = b1grad + d2;
 end
 
-cost = leastSquares + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
+cost = leastSquares + lambda / 2 * ( norm2(W1) + norm2(W2) ); %% + beta * kldiv 
 W1grad = W1grad / numPatches + lambda * W1;
 W2grad = W2grad / numPatches + lambda * W2;
 b1grad = b1grad / numPatches;
@@ -105,6 +105,10 @@ end
 function sigm = sigmoid(x)
   
     sigm = 1 ./ (1 + exp(-x));
+end
+
+function n = norm2(mat)
+    n = sum(sum(mat .* mat));
 end
 
 % % Sigmoid function derivative using identity from lecture notes
