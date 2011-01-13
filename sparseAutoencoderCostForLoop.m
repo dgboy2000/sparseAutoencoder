@@ -65,7 +65,7 @@ for i=1:numPatches,
 
   % Back-propagation calculation of gradients
   d3 = error .* a3 .* (1 - a3);
-  W2grad = W2grad + d3 * transpose(a2) / numPatches;
+  W2grad = W2grad + d3 * transpose(a2);
   b2grad = b2grad + d3 / numPatches;
 
   % % Sparsity stuff
@@ -75,13 +75,13 @@ for i=1:numPatches,
   % kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
 
   d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
-  W1grad = W1grad + d2 * transpose(patch) / numPatches;
+  W1grad = W1grad + d2 * transpose(patch);
   b1grad = b1grad + d2 / numPatches;
 end
 
 cost = leastSquares + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
-W1grad = W1grad + lambda * W1;
-W2grad = W2grad + lambda * W2;
+W1grad = W1grad / numPatches + lambda * W1;
+W2grad = W2grad / numPatches + lambda * W2;
 
 
 
