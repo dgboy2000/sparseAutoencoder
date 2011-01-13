@@ -64,7 +64,7 @@ for i=1:numPatches,
   leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
 
   % Back-propagation calculation of gradients
-  d3 = errors .* a3 .* (1 - a3);
+  d3 = error .* a3 .* (1 - a3);
   W2grad = W2grad + d3 * transpose(a2) / numPatches;
   b2grad = b2grad + d3 / numPatches;
 
