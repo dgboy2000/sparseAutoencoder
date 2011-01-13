@@ -42,10 +42,10 @@ b2grad = zeros(size(b2));
 % the gradient descent update to W1 would be W1 := W1 - alpha * W1grad, and similarly for W2, b1, b2. 
 % 
 datasize = size(data);
-numpatches = datasize(2);
+numPatches = datasize(2);
 
 % Row-vector to aid in calculation of hidden activations and output values
-weightsbuffer = ones(1, numpatches);
+weightsbuffer = ones(1, numPatches);
 
 leastSquares = 0;
 
