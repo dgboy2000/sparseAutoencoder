@@ -49,39 +49,39 @@ weightsbuffer = ones(1, numPatches);
 
 leastSquares = 0;
 
-% for i=1:numPatches,
-%   patch = data(:,i);
-%   
-%   % Calculate activations of hidden and output neurons
-%   z2 = W1 * patch + b1;
-%   a2 = sigmoid( z2 );
-% 
-%   z3 = W2 * a2 + b2;
-%   a3 = sigmoid( z3 );
-% 
-%   % Least squares component of cost
-%   error = a3 - patch;
-%   leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
-% 
-%   % Back-propagation calculation of gradients
-%   d3 = error .* a3 .* (1 - a3);
-%   W2grad = W2grad + d3 * transpose(a2) / numPatches;
-%   % b2grad = b2grad + d3 / numPatches;
-% 
-%   % % Sparsity stuff
-%   % avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
-%   % sparsityvec = -sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations); % hiddensize * 1
-%   % % sparsityvec * weightsbuffer; % Add this to the delta2 parenthesis
-%   % kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
-% 
-%   d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
-%   W1grad = W1grad + d2 * transpose(patch) / numPatches;
-%   % b1grad = b1grad + d2 / numPatches;
-% end
+for i=1:numPatches,
+  patch = data(:,i);
+  
+  % Calculate activations of hidden and output neurons
+  z2 = W1 * patch + b1;
+  a2 = sigmoid( z2 );
 
-cost = lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
-W1grad = lambda * W1;
-W2grad = lambda * W2;
+  z3 = W2 * a2 + b2;
+  a3 = sigmoid( z3 );
+
+  % Least squares component of cost
+  error = a3 - patch;
+  leastSquares = leastSquares + power(norm(error), 2) / (2 * numPatches); % Average least squares error over numPatches samples
+
+  % Back-propagation calculation of gradients
+  d3 = error .* a3 .* (1 - a3);
+  W2grad = W2grad + d3 * transpose(a2) / numPatches;
+  b2grad = b2grad + d3 / numPatches;
+
+  % % Sparsity stuff
+  % avgactivations = hiddenvalues * transpose(weightsbuffer) / numpatches; % hiddensize * 1
+  % sparsityvec = -sparsityParam ./ avgactivations + (1 - sparsityParam) ./ (1 - avgactivations); % hiddensize * 1
+  % % sparsityvec * weightsbuffer; % Add this to the delta2 parenthesis
+  % kldiv = sparsityParam * log(prod(sparsityParam ./ avgactivations)) + (1 - sparsityParam) * log(prod( (1 - sparsityParam) ./ (1 - avgactivations) )); % Add this to cost
+
+  d2 = (transpose(W2) * d3) .* a2 .* (1 - a2);
+  W1grad = W1grad + d2 * transpose(patch) / numPatches;
+  b1grad = b1grad + d2 / numPatches;
+end
+
+cost = leastSquares + lambda / 2 * ( power(norm(W1), 2) + power(norm(W2), 2) ); %% + beta * kldiv 
+W1grad = W1grad + lambda * W1;
+W2grad = W2grad + lambda * W2;
 
 
 
