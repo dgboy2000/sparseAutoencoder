@@ -1,12 +1,9 @@
-I am unfortunately submitting a buggy solution since I didn't leave sufficient time for debugging.  The sparse autoencoder notes were very clear to me, and I think you'll find this reflected in sparseAutoencoderCost.m.  I'll explain my progress, my bug, and the steps I'll take to resolve it while you are grading.
+Solution of the sparse autoencoder problem: http://nlp.stanford.edu/~socherr/sparseAutoencoder_2011new.pdf
 
-The existence of a bug is known because computeNumericalGradient, which has been proven correct by checkNumericalGradient, is only ~70% correlated with my programmed sparseAutoencoderCost gradient (when using only the least-squares term).  The effect of this is that gradient descent will step in sub-optimal directions, and the algorithm is not guaranteed to behave well.
+Note that the formula for the backpropagation update step of the sparsity term in the objective function is wrong in the pdf. The correct formula is implemented here in code.
 
-To continue debugging, I will take these steps:
-1. switch from MATLAB-optimized matrix operations to a for-loop of vector operations for clarity
-2. print out dimensions of elements along the way for sanity purposes
-3. print values of intermediate objects and sanity check
 
-fixes made:
--for loop fixes least-squares gradient
--misinterpreted norm(matrix) for sum of squares
+
+
+
+
